@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Home Update | Kristen Dibble</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --burgundy: #670038;
+      --burgundy-light: rgba(103,0,56,0.06);
+      --charcoal: #2a2223;
+      --taupe: #867268;
+      --sage: #bcd6c7;
+      --sage-dark: #7aab96;
+      --sage-light: rgba(188,214,199,0.15);
+      --white: #ffffff;
+      --off-white: #f9f6f4;
+      --border: #e8e0dc;
+      --muted: #9e8c85;
+    }
+    body { font-family: 'Jost', sans-serif; background: var(--off-white); min-height: 100vh; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+
+    /* LOGIN */
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
+    }
+    .login-card {
+      background: var(--white); border-radius: 20px; padding: 52px 44px;
+      max-width: 420px; width: 100%; text-align: center;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08); border-top: 4px solid var(--burgundy);
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .login-icon {
+      width:56px; height:56px; border-radius:50%; background:var(--sage-light);
+      border:2px solid var(--sage); display:flex; align-items:center; justify-content:center;
+      margin:0 auto 20px; font-size:22px;
+    }
+    .login-title { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:300; color:var(--charcoal); margin-bottom:6px; }
+    .login-sub { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--taupe); margin-bottom:32px; font-weight:500; }
+    .login-desc { font-size:13px; color:var(--taupe); margin-bottom:24px; line-height:1.7; }
+    .login-input {
+      width:100%; padding:13px 16px; border:1.5px solid var(--border); border-radius:10px;
+      font-size:14px; font-family:'Jost',sans-serif; color:var(--charcoal); background:var(--white);
+      margin-bottom:8px; transition:border-color 0.2s; outline:none;
+    }
+    .login-input:focus { border-color:var(--burgundy); box-shadow:0 0 0 3px rgba(103,0,56,0.08); }
+    .login-input.error { border-color:var(--burgundy); }
+    .login-error { font-size:12px; color:var(--burgundy); margin-bottom:8px; display:none; }
+    .login-btn {
+      width:100%; padding:13px; background:var(--burgundy); border:none; border-radius:10px;
+      color:var(--white); font-size:13px; font-weight:600; font-family:'Jost',sans-serif;
+      cursor:pointer; letter-spacing:1px; text-transform:uppercase; margin-top:8px;
+    }
+    .login-footer { margin-top:28px; padding-top:20px; border-top:1px solid var(--border); font-size:11px; color:var(--muted); }
+
+    /* DASHBOARD */
+    #dashboard { display:none; }
+    .header {
+      background:var(--charcoal); border-bottom:3px solid var(--burgundy);
+      padding:0 32px; min-height:72px; display:flex; align-items:center; justify-content:space-between;
+    }
+    .header-left .label { color:var(--sage); font-size:9px; letter-spacing:3px; text-transform:uppercase; font-weight:500; margin-bottom:2px; }
+    .header-left .address { font-family:'Cormorant Garamond',serif; color:var(--white); font-size:20px; font-weight:300; }
+    .header-right { display:flex; align-items:center; gap:16px; }
+    .header-right .week-label { color:var(--sage); font-size:9px; letter-spacing:2px; text-transform:uppercase; text-align:right; }
+    .header-right .go-live { color:var(--muted); font-size:11px; text-align:right; }
+    .signout-btn {
+      background:transparent; border:1px solid rgba(255,255,255,0.2); border-radius:8px;
+      color:var(--muted); font-size:11px; padding:6px 12px; cursor:pointer; font-family:'Jost',sans-serif;
+    }
+    .content { max-width:800px; margin:0 auto; padding:32px 24px; }
+    .welcome-name { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:300; color:var(--charcoal); margin-bottom:6px; }
+    .welcome-desc { font-size:13px; color:var(--taupe); line-height:1.8; margin-bottom:28px; }
+
+    /* STATS */
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+    .stat-card {
+      background:var(--white); border-radius:14px; padding:24px 20px; text-align:center;
+      border:1px solid var(--border); box-shadow:0 2px 12px rgba(0,0,0,0.04);
+    }
+    .stat-icon { font-size:24px; margin-bottom:8px; }
+    .stat-value { font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:600; color:var(--burgundy); line-height:1; }
+    .stat-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--taupe); margin-top:6px; font-weight:500; }
+
+    /* SECTIONS */
+    .section {
+      background:var(--white); border-radius:16px; padding:28px;
+      border:1px solid var(--border); margin-bottom:16px;
+    }
+    .section.accent { background:var(--sage-light); border-color:var(--sage); }
+    .section-title { font-size:9px; letter-spacing:3px; text-transform:uppercase; font-weight:600; margin-bottom:16px; }
+    .section .section-title { color:var(--burgundy); }
+    .section.accent .section-title { color:var(--sage-dark); }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+
+    /* FEEDBACK ITEMS */
+    .feedback-item { display:flex; gap:10px; margin-bottom:10px; align-items:flex-start; }
+    .feedback-dot {
+      width:18px; height:18px; border-radius:50%; display:flex; align-items:center;
+      justify-content:center; flex-shrink:0; margin-top:1px; font-size:9px; font-weight:700;
+    }
+    .feedback-dot.positive { background:var(--sage); color:#2a5a3a; }
+    .feedback-dot.concern { background:#f0e8d8; color:#8a6a3a; }
+    .feedback-text { font-size:13px; color:var(--charcoal); line-height:1.6; }
+
+    /* QUOTE */
+    .agent-quote {
+      font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:300;
+      font-style:italic; color:var(--charcoal); line-height:1.9;
+    }
+
+    /* NEXT STEPS */
+    .next-step { display:flex; gap:12px; margin-bottom:10px; align-items:flex-start; }
+    .step-num {
+      width:22px; height:22px; border-radius:50%; background:var(--burgundy-light);
+      border:1px solid var(--burgundy); display:flex; align-items:center; justify-content:center;
+      flex-shrink:0; font-size:10px; color:var(--burgundy); font-weight:600;
+    }
+    .step-text { font-size:13px; color:var(--charcoal); line-height:1.7; padding-top:2px; }
+
+    /* FOOTER */
+    .contact-footer {
+      background:var(--charcoal); border-radius:16px; padding:28px;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;
+    }
+    .contact-name { font-family:'Cormorant Garamond',serif; color:var(--white); font-size:20px; font-weight:300; margin-bottom:4px; }
+    .contact-title { color:var(--sage); font-size:10px; letter-spacing:2px; text-transform:uppercase; }
+    .contact-links { display:flex; gap:24px; }
+    .contact-links a { color:var(--muted); font-size:13px; text-decoration:none; }
+    .contact-web {
+      padding:10px 20px; background:var(--burgundy); border-radius:8px;
+      color:var(--white); font-size:11px; font-weight:600; text-decoration:none;
+      letter-spacing:1px; text-transform:uppercase;
+    }
+    .privacy-note { text-align:center; margin-top:20px; font-size:11px; color:var(--muted); }
+
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .two-col { grid-template-columns: 1fr; }
+      .login-card { padding: 36px 24px; }
+      .header { padding: 16px; }
+      .contact-footer { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-icon">🏡</div>
+    <div class="login-title">Your Home Update</div>
+    <div class="login-sub">Kristen Dibble · Charlotte Living & Homes</div>
+    <p class="login-desc">Enter the access code from your welcome email to view your listing update.</p>
+    <input class="login-input" type="password" id="password-input" placeholder="Enter your access code" />
+    <div class="login-error" id="login-error">That code doesn't match. Please try again.</div>
+    <button class="login-btn" onclick="handleLogin()">View My Update</button>
+    <div class="login-footer">Questions? Call or text Kristen at 704.806.6543</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="header">
+    <div class="header-left">
+      <div class="label">Charlotte Living & Homes</div>
+      <div class="address" id="dash-address"></div>
+    </div>
+    <div class="header-right">
+      <div>
+        <div class="week-label" id="dash-week"></div>
+        <div class="go-live" id="dash-golive"></div>
+      </div>
+      <button class="signout-btn" onclick="signOut()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="welcome-name" id="dash-welcome"></div>
+    <div class="welcome-desc" id="dash-desc"></div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon">🚪</div><div class="stat-value" id="stat-total"></div><div class="stat-label">Total Showings</div></div>
+      <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-value" id="stat-week"></div><div class="stat-label">This Week</div></div>
+      <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="stat-oh"></div><div class="stat-label">Open House</div></div>
+      <div class="stat-card"><div class="stat-icon">❤️</div><div class="stat-value" id="stat-saves"></div><div class="stat-label">Online Saves</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="section">
+        <div class="section-title">What Buyers Are Loving</div>
+        <div id="feedback-positive"></div>
+      </div>
+      <div class="section">
+        <div class="section-title">Feedback to Note</div>
+        <div id="feedback-concerns"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Market Context</div>
+      <p id="market-context" style="font-size:13px;color:var(--charcoal);line-height:1.8;"></p>
+    </div>
+
+    <div class="section accent">
+      <div class="section-title">Kristen's Strategic Read</div>
+      <div class="agent-quote" id="agent-read"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">What's Happening Next</div>
+      <div id="next-steps"></div>
+    </div>
+
+    <div class="contact-footer">
+      <div>
+        <div class="contact-name">Kristen Dibble</div>
+        <div class="contact-title">Realtor® · BHHS Carolinas Realty</div>
+      </div>
+      <div class="contact-links">
+        <a href="tel:704.806.6543">📞 704.806.6543</a>
+        <a href="mailto:kristen@charlottelivinghome.com">✉️ kristen@charlottelivinghome.com</a>
+      </div>
+      <a class="contact-web" href="https://www.charlottelivinghome.com" target="_blank">charlottelivinghome.com</a>
+    </div>
+    <div class="privacy-note" id="privacy-note"></div>
+  </div>
+</div>
+
+<script>
+const LISTINGS = [
+  {
+    password: "burning2024",
+    address: "7778 Burning Ridge Dr",
+    neighborhood: "Palisades",
+    city: "Charlotte, NC",
+    listPrice: "$649,000",
+    sellerName: "The Johnson Family",
+    weekNumber: 2,
+    goLiveDate: "May 12, 2026",
+    stats: { totalShowings: 11, thisWeekShowings: 4, openHouseAttendees: 23, onlineSavedCount: 847 },
+    feedbackPositive: ["Kitchen and open layout consistently praised","Backyard and outdoor space a top highlight","Price point seen as competitive for the area"],
+    feedbackConcerns: ["A few buyers wanted larger primary closet","One group concerned about proximity to Hwy 16"],
+    marketContext: "Two new listings came to market in Palisades this week at similar price points. We remain the strongest value per square foot in the neighborhood. Days on market for comparable homes is averaging 18 days right now.",
+    agentRead: "Traffic has been strong and feedback is positive. The concerns we're hearing are not dealbreakers for serious buyers — they're negotiating points. I'd like to give it one more week of full exposure before we reassess pricing strategy. I'll reach out Thursday to discuss.",
+    nextSteps: ["Open House scheduled for Sunday, May 26, 1–4pm","Paid social ad running through May 28","Agent follow-up calls going out Monday","Price strategy review call with you on Thursday"],
+  },
+  {
+    password: "whitepoint903",
+    address: "903 White Point Rd",
+    neighborhood: "Dilworth",
+    city: "Charlotte, NC",
+    listPrice: "$785,000",
+    sellerName: "The Smith Family",
+    weekNumber: 1,
+    goLiveDate: "May 19, 2026",
+    stats: { totalShowings: 6, thisWeekShowings: 6, openHouseAttendees: 14, onlineSavedCount: 512 },
+    feedbackPositive: ["Location and walkability mentioned by nearly every group","Character and original details well received","Outdoor entertaining space a standout"],
+    feedbackConcerns: ["Some buyers flagged the master bath as dated","One group asked about the HVAC age"],
+    marketContext: "Dilworth inventory remains tight. Only 3 comparable homes active right now. We launched at the right time — demand in this neighborhood is strong heading into summer.",
+    agentRead: "Excellent first week. Six showings in launch week is above average for Dilworth. The feedback we're getting is constructive and manageable. No red flags. Staying the course.",
+    nextSteps: ["Broker Open on Tuesday, May 27, 11am–1pm","Open House Sunday, June 1, 2–4pm","Social media feature reel going live Wednesday","Week 2 update will land in your inbox next Sunday"],
+  }
+];
+
+let currentListing = null;
+
+document.getElementById('password-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') handleLogin();
+});
+
+function handleLogin() {
+  const val = document.getElementById('password-input').value.trim().toLowerCase();
+  const listing = LISTINGS.find(l => l.password === val);
+  if (listing) {
+    currentListing = listing;
+    showDashboard(listing);
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('password-input').classList.add('error');
+  }
+}
+
+function signOut() {
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('password-input').value = '';
+  document.getElementById('login-error').style.display = 'none';
+  document.getElementById('password-input').classList.remove('error');
+}
+
+function showDashboard(l) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+
+  const weekLabel = l.weekNumber === 1 ? 'Week 1 — Launch' : `Week ${l.weekNumber}`;
+  const firstName = l.sellerName.includes('The') ? l.sellerName.replace('The ', '').replace(' Family', '') : l.sellerName.split(' ')[0];
+
+  document.getElementById('dash-address').textContent = l.address;
+  document.getElementById('dash-week').textContent = weekLabel;
+  document.getElementById('dash-golive').textContent = 'Listed ' + l.goLiveDate;
+  document.getElementById('dash-welcome').textContent = `Hello, ${firstName}. 👋`;
+  document.getElementById('dash-desc').innerHTML = `Here's your ${weekLabel.toLowerCase()} market update for <strong>${l.address}</strong> — listed at <strong>${l.listPrice}</strong>.`;
+
+  document.getElementById('stat-total').textContent = l.stats.totalShowings;
+  document.getElementById('stat-week').textContent = l.stats.thisWeekShowings;
+  document.getElementById('stat-oh').textContent = l.stats.openHouseAttendees;
+  document.getElementById('stat-saves').textContent = l.stats.onlineSavedCount.toLocaleString();
+
+  document.getElementById('feedback-positive').innerHTML = l.feedbackPositive.map(item =>
+    `<div class="feedback-item"><div class="feedback-dot positive">✓</div><div class="feedback-text">${item}</div></div>`
+  ).join('');
+
+  document.getElementById('feedback-concerns').innerHTML = l.feedbackConcerns.map(item =>
+    `<div class="feedback-item"><div class="feedback-dot concern">!</div><div class="feedback-text">${item}</div></div>`
+  ).join('');
+
+  document.getElementById('market-context').textContent = l.marketContext;
+  document.getElementById('agent-read').textContent = `"${l.agentRead}"`;
+
+  document.getElementById('next-steps').innerHTML = l.nextSteps.map((step, i) =>
+    `<div class="next-step"><div class="step-num">${i+1}</div><div class="step-text">${step}</div></div>`
+  ).join('');
+
+  document.getElementById('privacy-note').textContent = `This update is private and intended only for ${l.sellerName}. © Kristen Dibble · Charlotte Living & Homes`;
+}
+</script>
+</body>
+</html>

@@ -448,6 +448,34 @@
     color: var(--muted);
   }
  
+  /* Listing link buttons */
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.25rem;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .link-btn:hover {
+    background: var(--charcoal);
+    color: white;
+    border-color: var(--charcoal);
+  }
+  .link-btn svg {
+    width: 12px; height: 12px;
+    opacity: 0.5;
+  }
+ 
   /* Responsive */
   @media (max-width: 640px) {
     .dash-header { padding: 1.25rem 1.25rem; }
@@ -581,6 +609,14 @@
       <div class="card-body" id="val-next">—</div>
     </div>
  
+    <!-- Listing Links -->
+    <div id="links-section" style="display:none; margin-top:1rem;">
+      <div class="saves-section">
+        <div class="section-title">View Your Listing On</div>
+        <div id="links-row" style="display:flex; flex-wrap:wrap; gap:0.75rem;"></div>
+      </div>
+    </div>
+ 
   </div>
 </div>
  
@@ -597,7 +633,8 @@
     showings: 4, openhouses: 5,
     realtor: 6, redfin: 7, homes: 8, zillow: 9, mls: 10,
     loving: 11, concerned: 12,
-    market: 13, strategic: 14, next: 15
+    market: 13, strategic: 14, next: 15,
+    linkZillow: 16, linkRedfin: 17, linkRealtor: 18, linkHomes: 19, linkMls: 20
   };
  
   function parseCSV(text) {
@@ -692,6 +729,32 @@
     document.getElementById('val-market').textContent = get(COL.market);
     document.getElementById('val-strategic').textContent = get(COL.strategic);
     document.getElementById('val-next').textContent = get(COL.next);
+ 
+    // Listing links
+    const linkDefs = [
+      { col: COL.linkZillow,  label: 'Zillow' },
+      { col: COL.linkRedfin,  label: 'Redfin' },
+      { col: COL.linkRealtor, label: 'Realtor.com' },
+      { col: COL.linkHomes,   label: 'Homes.com' },
+      { col: COL.linkMls,     label: 'MLS' },
+    ];
+    const linksRow = document.getElementById('links-row');
+    linksRow.innerHTML = '';
+    let hasLinks = false;
+    linkDefs.forEach(({ col, label }) => {
+      const url = (row[col] || '').trim();
+      if (url) {
+        hasLinks = true;
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.className = 'link-btn';
+        a.innerHTML = `${label} <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M5 2h5v5"/></svg>`;
+        linksRow.appendChild(a);
+      }
+    });
+    document.getElementById('links-section').style.display = hasLinks ? 'block' : 'none';
  
     document.getElementById('loading').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';

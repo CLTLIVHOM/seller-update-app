@@ -642,7 +642,7 @@
     <!-- Online Activity -->
     <div class="report-section">
       <div class="section-title">Buyer Interest Online</div>
-      <p class="section-intro" id="activity-intro">A weekly snapshot of how buyers are engaging with your listing across the major search platforms.</p>
+      <p class="section-intro" id="activity-intro">A platform-reported snapshot of buyer activity. Zillow and Realtor.com reflect rolling/past-month activity, Homes.com shows all-time views, and MLS/ListTrac reflects the report period.</p>
       <div class="interest-summary">
         <div class="interest-metric">
           <div class="interest-metric-label">Total Views</div>
@@ -658,31 +658,31 @@
           <div class="activity-platform">Realtor.com</div>
           <div class="activity-stat"><span class="activity-label">Views</span><span class="activity-value" id="val-realtor-views">—</span></div>
           <div class="activity-stat"><span class="activity-label">Saves</span><span class="activity-value" id="val-realtor-saves">—</span></div>
-          <div class="activity-stat"><span class="activity-label">This Week</span><span class="activity-value" id="val-realtor-change">—</span></div>
+          <div class="activity-stat"><span class="activity-label">Since Last Update</span><span class="activity-value" id="val-realtor-change">—</span></div>
         </div>
         <div class="activity-row">
           <div class="activity-platform">Redfin</div>
           <div class="activity-stat"><span class="activity-label">Views</span><span class="activity-value" id="val-redfin-views">—</span></div>
           <div class="activity-stat"><span class="activity-label">Favorites</span><span class="activity-value" id="val-redfin-saves">—</span></div>
-          <div class="activity-stat"><span class="activity-label">This Week</span><span class="activity-value" id="val-redfin-change">—</span></div>
+          <div class="activity-stat"><span class="activity-label">Since Last Update</span><span class="activity-value" id="val-redfin-change">—</span></div>
         </div>
         <div class="activity-row">
           <div class="activity-platform">Homes.com</div>
           <div class="activity-stat"><span class="activity-label">Views</span><span class="activity-value" id="val-homes-views">—</span></div>
           <div class="activity-stat"><span class="activity-label">Saves</span><span class="activity-value" id="val-homes-saves">—</span></div>
-          <div class="activity-stat"><span class="activity-label">This Week</span><span class="activity-value" id="val-homes-change">—</span></div>
+          <div class="activity-stat"><span class="activity-label">Since Last Update</span><span class="activity-value" id="val-homes-change">—</span></div>
         </div>
         <div class="activity-row">
           <div class="activity-platform">Zillow</div>
           <div class="activity-stat"><span class="activity-label">Views</span><span class="activity-value" id="val-zillow-views">—</span></div>
           <div class="activity-stat"><span class="activity-label">Saves</span><span class="activity-value" id="val-zillow-saves">—</span></div>
-          <div class="activity-stat"><span class="activity-label">This Week</span><span class="activity-value" id="val-zillow-change">—</span></div>
+          <div class="activity-stat"><span class="activity-label">Since Last Update</span><span class="activity-value" id="val-zillow-change">—</span></div>
         </div>
         <div class="activity-row">
           <div class="activity-platform">MLS</div>
           <div class="activity-stat"><span class="activity-label">Views</span><span class="activity-value" id="val-mls-views">—</span></div>
           <div class="activity-stat"><span class="activity-label">Saves</span><span class="activity-value" id="val-mls-saves">—</span></div>
-          <div class="activity-stat"><span class="activity-label">This Week</span><span class="activity-value" id="val-mls-change">—</span></div>
+          <div class="activity-stat"><span class="activity-label">Since Last Update</span><span class="activity-value" id="val-mls-change">—</span></div>
         </div>
       </div>
     </div>
@@ -822,7 +822,7 @@
   }
 
   function formatNumber(value) {
-    const clean = String(value || '').replace(/,/g, '').trim();
+    const clean = String(value ?? '').replace(/,/g, '').trim();
     if (!clean || clean === '—') return '—';
     const number = Number(clean);
     return Number.isFinite(number) ? number.toLocaleString() : value;
@@ -1009,8 +1009,8 @@
 
     const intro = document.getElementById('activity-intro');
     intro.textContent = hasViews
-      ? 'A weekly snapshot of how buyers are viewing, saving, and favoriting your listing across the major search platforms.'
-      : 'A weekly snapshot of how buyers are saving and favoriting your listing across the major search platforms.';
+      ? 'A platform-reported snapshot of buyer activity. Zillow and Realtor.com reflect rolling/past-month activity, Homes.com shows all-time views, and MLS/ListTrac reflects the report period.'
+      : 'A platform-reported snapshot of how buyers are saving and favoriting your listing across the major search platforms.';
   }
  
   function handleLogout() {

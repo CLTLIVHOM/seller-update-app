@@ -288,8 +288,8 @@
  
   .stat-value.accent { color: var(--accent); }
  
-  /* Saves grid */
-  .saves-section {
+  /* Report sections */
+  .report-section {
     background: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: 3px;
@@ -317,6 +317,100 @@
     background: var(--border);
   }
  
+  .saves-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.75rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+
+  .section-intro {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--muted);
+    margin: -0.35rem 0 1.25rem;
+  }
+
+  .interest-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .interest-metric {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1rem;
+  }
+
+  .interest-metric-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+  }
+
+  .interest-metric-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.35rem;
+    font-weight: 300;
+    color: var(--charcoal);
+    line-height: 1;
+  }
+
+  .activity-list {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .activity-row {
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) repeat(3, minmax(80px, 0.6fr));
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  .activity-platform {
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    font-weight: 500;
+  }
+
+  .activity-stat {
+    text-align: right;
+  }
+
+  .activity-label {
+    display: block;
+    font-size: 0.58rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.15rem;
+  }
+
+  .activity-value {
+    font-size: 1rem;
+    color: var(--charcoal);
+    font-weight: 400;
+  }
+
+  .activity-value.positive {
+    color: var(--success);
+  }
+
   .saves-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -469,6 +563,15 @@
     .dash-body { padding: 1.5rem 1rem 3rem; }
     .cards-grid { grid-template-columns: 1fr; }
     .login-card { padding: 2.5rem 1.75rem; }
+    .activity-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .activity-stat {
+      display: flex;
+      justify-content: space-between;
+      text-align: left;
+    }
   }
 </style>
 </head>
@@ -536,29 +639,50 @@
       </div>
     </div>
  
-    <!-- Online Saves -->
-    <div class="saves-section">
-      <div class="section-title">Online Saves by Platform</div>
-      <div class="saves-grid">
-        <div class="save-item">
-          <div class="save-platform">Realtor.com</div>
-          <div class="save-count" id="val-realtor">—</div>
+    <!-- Online Activity -->
+    <div class="report-section">
+      <div class="section-title">Buyer Interest Online</div>
+      <p class="section-intro" id="activity-intro">A weekly snapshot of how buyers are engaging with your listing across the major search platforms.</p>
+      <div class="interest-summary">
+        <div class="interest-metric">
+          <div class="interest-metric-label">Total Views</div>
+          <div class="interest-metric-value" id="val-total-views">—</div>
         </div>
-        <div class="save-item">
-          <div class="save-platform">Redfin</div>
-          <div class="save-count" id="val-redfin">—</div>
+        <div class="interest-metric">
+          <div class="interest-metric-label">Total Saves / Favorites</div>
+          <div class="interest-metric-value" id="val-total-saves">—</div>
         </div>
-        <div class="save-item">
-          <div class="save-platform">Homes.com</div>
-          <div class="save-count" id="val-homes">—</div>
+      </div>
+      <div class="activity-list" id="activity-list">
+        <div class="activity-row">
+          <div class="activity-platform">Realtor.com</div>
+          <div class="activity-stat"><span class="activity-label">Views</span><span class="activity-value" id="val-realtor-views">—</span></div>
+          <div class="activity-stat"><span class="activity-label">Saves</span><span class="activity-value" id="val-realtor-saves">—</span></div>
+          <div class="activity-stat"><span class="activity-label">This Week</span><span class="activity-value" id="val-realtor-change">—</span></div>
         </div>
-        <div class="save-item">
-          <div class="save-platform">Zillow</div>
-          <div class="save-count" id="val-zillow">—</div>
+        <div class="activity-row">
+          <div class="activity-platform">Redfin</div>
+          <div class="activity-stat"><span class="activity-label">Views</span><span class="activity-value" id="val-redfin-views">—</span></div>
+          <div class="activity-stat"><span class="activity-label">Favorites</span><span class="activity-value" id="val-redfin-saves">—</span></div>
+          <div class="activity-stat"><span class="activity-label">This Week</span><span class="activity-value" id="val-redfin-change">—</span></div>
         </div>
-        <div class="save-item">
-          <div class="save-platform">MLS</div>
-          <div class="save-count" id="val-mls">—</div>
+        <div class="activity-row">
+          <div class="activity-platform">Homes.com</div>
+          <div class="activity-stat"><span class="activity-label">Views</span><span class="activity-value" id="val-homes-views">—</span></div>
+          <div class="activity-stat"><span class="activity-label">Saves</span><span class="activity-value" id="val-homes-saves">—</span></div>
+          <div class="activity-stat"><span class="activity-label">This Week</span><span class="activity-value" id="val-homes-change">—</span></div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-platform">Zillow</div>
+          <div class="activity-stat"><span class="activity-label">Views</span><span class="activity-value" id="val-zillow-views">—</span></div>
+          <div class="activity-stat"><span class="activity-label">Saves</span><span class="activity-value" id="val-zillow-saves">—</span></div>
+          <div class="activity-stat"><span class="activity-label">This Week</span><span class="activity-value" id="val-zillow-change">—</span></div>
+        </div>
+        <div class="activity-row">
+          <div class="activity-platform">MLS</div>
+          <div class="activity-stat"><span class="activity-label">Views</span><span class="activity-value" id="val-mls-views">—</span></div>
+          <div class="activity-stat"><span class="activity-label">Saves</span><span class="activity-value" id="val-mls-saves">—</span></div>
+          <div class="activity-stat"><span class="activity-label">This Week</span><span class="activity-value" id="val-mls-change">—</span></div>
         </div>
       </div>
     </div>
@@ -609,7 +733,7 @@
 <script>
   const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSBWbtZIjZjY5Fkuny3RXIlpXupbIDt4Ib4AHO6-Mf9bUUCugidlncZ-eO2tzpUD-l2WGLy9MMmuSID/pub?gid=0&single=true&output=csv";
  
-  // Column mapping (0-indexed, matches header order)
+  // Column mapping (0-indexed, matches current published Sheet order)
   // Date | Address | Password | DOM | Total Showings | Total Open Houses |
   // Saves-Realtor | Saves-Redfin | Saves-Homes | Saves-Zillow | Saves-MLS |
   // What Buyers Are Loving | What Buyers Are Concerned About |
@@ -622,8 +746,106 @@
     market: 13, strategic: 14, next: 15,
     linkZillow: 16, linkRedfin: 17, linkRealtor: 18, linkHomes: 19, linkMls: 20
   };
+
+  // Optional newer columns. If these headers are added to the Google Sheet,
+  // the report shows views and week-over-week favorite changes automatically.
+  const PLATFORM_FIELDS = [
+    { key: 'realtor', label: 'Realtor.com', saveHeaders: ['Saves - Realtor', 'Saves-Realtor', 'Realtor Saves'], viewHeaders: ['Views - Realtor', 'Realtor Views'], previousHeaders: ['Previous Saves - Realtor', 'Prior Saves - Realtor', 'Last Week Saves - Realtor'] },
+    { key: 'redfin', label: 'Redfin', saveHeaders: ['Saves - Redfin', 'Saves - RedFin', 'Saves-Redfin', 'Redfin Saves'], viewHeaders: ['Views - Redfin', 'Views - RedFin', 'Redfin Views'], previousHeaders: ['Previous Saves - Redfin', 'Prior Saves - Redfin', 'Last Week Saves - Redfin'] },
+    { key: 'homes', label: 'Homes.com', saveHeaders: ['Saves - Homes', 'Saves-Homes', 'Homes Saves'], viewHeaders: ['Views - Homes', 'Homes Views'], previousHeaders: ['Previous Saves - Homes', 'Prior Saves - Homes', 'Last Week Saves - Homes'] },
+    { key: 'zillow', label: 'Zillow', saveHeaders: ['Saves - Zillow', 'Saves-Zillow', 'Zillow Saves'], viewHeaders: ['Views - Zillow', 'Zillow Views'], previousHeaders: ['Previous Saves - Zillow', 'Prior Saves - Zillow', 'Last Week Saves - Zillow'] },
+    { key: 'mls', label: 'MLS', saveHeaders: ['Saves - MLS', 'Saves-MLS', 'MLS Saves'], viewHeaders: ['Views - MLS', 'MLS Views'], previousHeaders: ['Previous Saves - MLS', 'Prior Saves - MLS', 'Last Week Saves - MLS'] }
+  ];
  
   function parseCSV(text) {
+    const rows = [];
+    let row = [];
+    let cur = '';
+    let inQuote = false;
+
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      const next = text[i + 1];
+
+      if (ch === '"' && inQuote && next === '"') {
+        cur += '"';
+        i++;
+      } else if (ch === '"') {
+        inQuote = !inQuote;
+      } else if (ch === ',' && !inQuote) {
+        row.push(cur);
+        cur = '';
+      } else if ((ch === '\n' || ch === '\r') && !inQuote) {
+        if (ch === '\r' && next === '\n') i++;
+        row.push(cur);
+        if (row.some(cell => cell.trim())) rows.push(row);
+        row = [];
+        cur = '';
+      } else {
+        cur += ch;
+      }
+    }
+
+    row.push(cur);
+    if (row.some(cell => cell.trim())) rows.push(row);
+    return rows;
+  }
+
+  function parseSheet(text) {
+    const rows = parseCSV(text);
+    const headers = rows.shift() || [];
+    return {
+      headers,
+      rows,
+      headerMap: buildHeaderMap(headers)
+    };
+  }
+
+  function buildHeaderMap(headers) {
+    const map = {};
+    headers.forEach((header, index) => {
+      map[normalizeHeader(header)] = index;
+    });
+    return map;
+  }
+
+  function normalizeHeader(str) {
+    return (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  function findColumn(headerMap, names, fallback) {
+    for (const name of names) {
+      const index = headerMap[normalizeHeader(name)];
+      if (index !== undefined) return index;
+    }
+    return fallback;
+  }
+
+  function formatNumber(value) {
+    const clean = String(value || '').replace(/,/g, '').trim();
+    if (!clean || clean === '—') return '—';
+    const number = Number(clean);
+    return Number.isFinite(number) ? number.toLocaleString() : value;
+  }
+
+  function toNumber(value) {
+    const clean = String(value || '').replace(/,/g, '').trim();
+    if (!clean || clean === '—') return null;
+    const number = Number(clean);
+    return Number.isFinite(number) ? number : null;
+  }
+
+  function setText(id, value) {
+    document.getElementById(id).textContent = value;
+  }
+
+  function getByHeaders(row, headerMap, names, fallback) {
+    const col = findColumn(headerMap, names, fallback);
+    return col === undefined ? '' : (row[col] || '').trim();
+  }
+
+  /* Legacy CSV parser kept above as parseCSV; parseSheet handles headers. */
+  function parseLegacyCSV(text) {
     const rows = [];
     const lines = text.split('\n');
     for (let i = 1; i < lines.length; i++) { // skip header
@@ -666,15 +888,16 @@
     try {
       const resp = await fetch(SHEET_CSV);
       const text = await resp.text();
-      const rows = parseCSV(text);
- 
+      const sheet = parseSheet(text);
+      const rows = sheet.rows;
+
       const normAddr = normalize(addrRaw);
       const normPass = normalize(passRaw);
- 
+
       // Find all matching rows, pick most recent
       const matches = rows.filter(r =>
-        normalize(r[COL.address]) === normAddr &&
-        normalize(r[COL.password]) === normPass
+        normalize(r[findColumn(sheet.headerMap, ['Address', 'Property Address'], COL.address)]) === normAddr &&
+        normalize(r[findColumn(sheet.headerMap, ['Password', 'Access Code'], COL.password)]) === normPass
       );
  
       if (matches.length === 0) {
@@ -687,7 +910,7 @@
  
       // Use last match (most recent row)
       const row = matches[matches.length - 1];
-      showDashboard(row, addrRaw);
+      showDashboard(row, addrRaw, sheet.headerMap);
  
     } catch (e) {
       document.getElementById('loading').style.display = 'none';
@@ -697,19 +920,15 @@
     }
   }
  
-  function showDashboard(row, address) {
+  function showDashboard(row, address, headerMap = {}) {
     const get = (col) => (row[col] || '').trim() || '—';
- 
+
     document.getElementById('dash-address').textContent = address.toUpperCase();
     document.getElementById('dash-date').textContent = 'Week of ' + (get(COL.date));
     document.getElementById('val-dom').textContent = get(COL.dom);
     document.getElementById('val-showings').textContent = get(COL.showings);
     document.getElementById('val-openhouses').textContent = get(COL.openhouses);
-    document.getElementById('val-realtor').textContent = get(COL.realtor);
-    document.getElementById('val-redfin').textContent = get(COL.redfin);
-    document.getElementById('val-homes').textContent = get(COL.homes);
-    document.getElementById('val-zillow').textContent = get(COL.zillow);
-    document.getElementById('val-mls').textContent = get(COL.mls);
+    renderOnlineActivity(row, headerMap);
     document.getElementById('val-loving').textContent = get(COL.loving);
     document.getElementById('val-concerned').textContent = get(COL.concerned);
     document.getElementById('val-market').textContent = get(COL.market);
@@ -744,6 +963,54 @@
  
     document.getElementById('loading').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
+  }
+
+  function renderOnlineActivity(row, headerMap) {
+    let totalViews = 0;
+    let hasViews = false;
+    let totalSaves = 0;
+    let hasSaves = false;
+
+    PLATFORM_FIELDS.forEach((platform) => {
+      const saveFallback = COL[platform.key];
+      const savesRaw = getByHeaders(row, headerMap, platform.saveHeaders, saveFallback);
+      const viewsRaw = getByHeaders(row, headerMap, platform.viewHeaders);
+      const previousRaw = getByHeaders(row, headerMap, platform.previousHeaders);
+
+      const saves = toNumber(savesRaw);
+      const views = toNumber(viewsRaw);
+      const previous = toNumber(previousRaw);
+
+      if (views !== null) {
+        hasViews = true;
+        totalViews += views;
+      }
+      if (saves !== null) {
+        hasSaves = true;
+        totalSaves += saves;
+      }
+
+      setText(`val-${platform.key}-views`, views === null ? '—' : formatNumber(views));
+      setText(`val-${platform.key}-saves`, saves === null ? '—' : formatNumber(saves));
+
+      const changeEl = document.getElementById(`val-${platform.key}-change`);
+      if (saves !== null && previous !== null) {
+        const delta = saves - previous;
+        changeEl.textContent = delta > 0 ? `+${formatNumber(delta)}` : formatNumber(delta);
+        changeEl.classList.toggle('positive', delta > 0);
+      } else {
+        changeEl.textContent = '—';
+        changeEl.classList.remove('positive');
+      }
+    });
+
+    setText('val-total-views', hasViews ? formatNumber(totalViews) : '—');
+    setText('val-total-saves', hasSaves ? formatNumber(totalSaves) : '—');
+
+    const intro = document.getElementById('activity-intro');
+    intro.textContent = hasViews
+      ? 'A weekly snapshot of how buyers are viewing, saving, and favoriting your listing across the major search platforms.'
+      : 'A weekly snapshot of how buyers are saving and favoriting your listing across the major search platforms.';
   }
  
   function handleLogout() {

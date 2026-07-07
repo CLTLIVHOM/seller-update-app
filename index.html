@@ -733,7 +733,8 @@
 <script>
   const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSBWbtZIjZjY5Fkuny3RXIlpXupbIDt4Ib4AHO6-Mf9bUUCugidlncZ-eO2tzpUD-l2WGLy9MMmuSID/pub?gid=0&single=true&output=csv";
  
-  // Column mapping (0-indexed, matches current published Sheet order)
+  // Fallback column mapping (0-indexed). Header names are preferred so the
+  // Sheet can evolve without breaking the report.
   // Date | Address | Password | DOM | Total Showings | Total Open Houses |
   // Saves-Realtor | Saves-Redfin | Saves-Homes | Saves-Zillow | Saves-MLS |
   // What Buyers Are Loving | What Buyers Are Concerned About |
@@ -745,6 +746,23 @@
     loving: 11, concerned: 12,
     market: 13, strategic: 14, next: 15,
     linkZillow: 16, linkRedfin: 17, linkRealtor: 18, linkHomes: 19, linkMls: 20
+  };
+
+  const FIELD_HEADERS = {
+    date: ['Last Updated', 'Date', 'Update Date'],
+    dom: ['DOM', 'Days on Market'],
+    showings: ['Total Showings', 'Showings'],
+    openhouses: ['Total Open Houses', 'Open Houses'],
+    loving: ['What Buyers Are Loving'],
+    concerned: ['What Buyers Are Concerned About'],
+    market: ['Market Context'],
+    strategic: ["Kristen's Strategic Read", 'Strategic Read'],
+    next: ["What's Happening Next", 'What is Happening Next', 'Next Steps'],
+    linkZillow: ['Link - Zillow', 'Zillow Link'],
+    linkRedfin: ['Link - Redfin', 'Redfin Link'],
+    linkRealtor: ['Link - Realtor', 'Realtor Link', 'Realtor.com Link'],
+    linkHomes: ['Link - Homes', 'Homes Link', 'Homes.com Link'],
+    linkMls: ['Link - MLS', 'MLS Link', 'ListTrac Link', 'My Seller Reports Link']
   };
 
   // Optional newer columns. If these headers are added to the Google Sheet,
@@ -844,6 +862,10 @@
     return col === undefined ? '' : (row[col] || '').trim();
   }
 
+  function getField(row, headerMap, key) {
+    return getByHeaders(row, headerMap, FIELD_HEADERS[key] || [], COL[key]);
+  }
+
   /* Legacy CSV parser kept above as parseCSV; parseSheet handles headers. */
   function parseLegacyCSV(text) {
     const rows = [];
@@ -921,33 +943,37 @@
   }
  
   function showDashboard(row, address, headerMap = {}) {
-    const get = (col) => (row[col] || '').trim() || '—';
+    const display = (value) => {
+      const cleaned = (value ?? '').toString().trim();
+      return cleaned === '' ? '—' : cleaned;
+    };
+    const field = (key) => display(getField(row, headerMap, key));
 
     document.getElementById('dash-address').textContent = address.toUpperCase();
-    document.getElementById('dash-date').textContent = 'Week of ' + (get(COL.date));
-    document.getElementById('val-dom').textContent = get(COL.dom);
-    document.getElementById('val-showings').textContent = get(COL.showings);
-    document.getElementById('val-openhouses').textContent = get(COL.openhouses);
+    document.getElementById('dash-date').textContent = 'Updated ' + field('date');
+    document.getElementById('val-dom').textContent = field('dom');
+    document.getElementById('val-showings').textContent = field('showings');
+    document.getElementById('val-openhouses').textContent = field('openhouses');
     renderOnlineActivity(row, headerMap);
-    document.getElementById('val-loving').textContent = get(COL.loving);
-    document.getElementById('val-concerned').textContent = get(COL.concerned);
-    document.getElementById('val-market').textContent = get(COL.market);
-    document.getElementById('val-strategic').textContent = get(COL.strategic);
-    document.getElementById('val-next').textContent = get(COL.next);
+    document.getElementById('val-loving').textContent = field('loving');
+    document.getElementById('val-concerned').textContent = field('concerned');
+    document.getElementById('val-market').textContent = field('market');
+    document.getElementById('val-strategic').textContent = field('strategic');
+    document.getElementById('val-next').textContent = field('next');
  
     // Listing links
     const linkDefs = [
-      { col: COL.linkZillow,  label: 'Zillow' },
-      { col: COL.linkRedfin,  label: 'Redfin' },
-      { col: COL.linkRealtor, label: 'Realtor.com' },
-      { col: COL.linkHomes,   label: 'Homes.com' },
-      { col: COL.linkMls,     label: 'MLS' },
+      { key: 'linkZillow',  label: 'Zillow' },
+      { key: 'linkRedfin',  label: 'Redfin' },
+      { key: 'linkRealtor', label: 'Realtor.com' },
+      { key: 'linkHomes',   label: 'Homes.com' },
+      { key: 'linkMls',     label: 'MLS' },
     ];
     const linksRow = document.getElementById('links-row');
     linksRow.innerHTML = '';
     let hasLinks = false;
-    linkDefs.forEach(({ col, label }) => {
-      const url = (row[col] || '').trim();
+    linkDefs.forEach(({ key, label }) => {
+      const url = getField(row, headerMap, key);
       if (url) {
         hasLinks = true;
         const a = document.createElement('a');

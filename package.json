@@ -1,0 +1,1 @@
+{"name":"charlotte-seller-reports","private":true,"type":"module","scripts":{"start":"node server.mjs","test":"node --test workflow.test.mjs registry.test.mjs","update":"node run-update.mjs"}}

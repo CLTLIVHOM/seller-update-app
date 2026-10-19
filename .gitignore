@@ -1,0 +1,5 @@
+private-drafts/
+private-inputs/
+.env*
+.DS_Store
+preview.json

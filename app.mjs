@@ -41,7 +41,7 @@ for(const [channel,label] of Object.entries(channelLabels)){
 }
 const shows=showingSummary(data);
 for(const [label,value]of [['Showings this week',num(shows.weekly)],['Last completed showing',shows.last||'Date to confirm'],['Days since last showing',num(shows.days)]]){const card=el('div',undefined,'stat');card.append(el('strong',value),el('span',label));$('showing-stats').append(card)}
-text('showing-period',shows.weekly===null?'Showing totals need confirmation.':`${data.showingsPeriodStart} to ${data.showingsPeriodEnd} · ${data.showingSource||'Source to confirm'}`);
+text('showing-period',shows.weekly===null?'Weekly showing count and last completed showing date need confirmation.':`${data.showingsPeriodStart} to ${data.showingsPeriodEnd} · ${data.showingSource||'Source to confirm'}`);
 const quiet=data.showingNote||(shows.quiet?'No completed showings for at least three weeks. Review price, presentation, competing listings, and the next action with Kristen.':'');$('quiet-note').hidden=!quiet;text('quiet-note',quiet);
 items('feedback-list',data.feedback,(c,v)=>c.append(el('h3',v.date+' · '+v.outcome),el('p',v.feedback)),'No dated showing history is available in this export. Existing weekly comments are preserved above.');
 const money=v=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v);

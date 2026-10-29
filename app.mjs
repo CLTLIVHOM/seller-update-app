@@ -7,6 +7,20 @@ function safeLink(url,label){try{const u=new URL(url);if(u.protocol!=='https:')r
 function empty(id,message){$(id).append(el('div',message,'empty'))}
 function addPerformanceHistory(card,metric){
  if(metric.freshness)card.append(el('p',metric.freshness,'period'));
+ if(metric.previous?.comparisonType==='reported-snapshot'){
+  const previous=metric.previous;
+  card.append(el('p',`Monday ${previous.collectedAt} → Thursday ${metric.collectedAt}`,'period'));
+  for(const [key,label] of [['views','Views'],['saves','Saves / favorites']]){
+   const current=metric[key],baseline=previous[key];
+   if(current==null||baseline==null){card.append(el('p',label+': unavailable','weekly-change'));continue;}
+   const difference=current-baseline;
+   const signed=difference>0?'+':'';
+   const percent=baseline===0?'percentage unavailable':signed+(difference/baseline*100).toFixed(2)+'%';
+   card.append(el('p',`${label}: ${num(baseline)} → ${num(current)} · ${signed}${numSigned(difference)} (${percent})`,'weekly-change'));
+  }
+  card.append(el('p','Change in reported snapshots, not unique buyers.','period'));
+  return;
+ }
  if(metric.previous)card.append(el('p',`Previously reported ${metric.previous.collectedAt}: ${num(metric.previous.views)} views · ${num(metric.previous.saves)} saves / favorites`,'period'));
  const changes=['views','saves'].map(key=>{const d=metricChange(metric,metric.previous,key);return d?`${key==='views'?'Views':'Saves'}: ${d.value>0?'+':''}${numSigned(d.value)}`:null}).filter(Boolean);
  card.append(el('p',changes.length?`${changes.join(' · ')} since ${metric.previous.collectedAt}. Change in reported totals, not unique buyers.`:'Weekly change: awaiting the next comparable update.','weekly-change'));

@@ -13,8 +13,9 @@ export function supplement(report,raw){
  }
  out.executiveSummary=`Review current buyer activity and next steps below. Supporting market and feedback sections were last reviewed ${extra.sectionAsOf}.`;
  const shortDate=new Intl.DateTimeFormat('en-US',{month:'long',day:'numeric',timeZone:'UTC'}).format(new Date(extra.sectionAsOf+'T12:00:00Z'));
- if(report.reportDate===extra.sectionAsOf||report.reportDate===shortDate){
-  out.reportDate=extra.sectionAsOf;
+ const fullDate=new Intl.DateTimeFormat('en-US',{month:'long',day:'numeric',year:'numeric',timeZone:'UTC'}).format(new Date(extra.sectionAsOf+'T12:00:00Z'));
+ if(report.reportDate===extra.sectionAsOf||report.reportDate===shortDate||report.reportDate===fullDate){
+  out.reportDate=report.reportDate;
   out.metrics=report.metrics.map(metric=>{
    const info=extra.metrics?.find(m=>m.platform===metric.platform)||{};
    const result={...metric};

@@ -22,7 +22,7 @@ export function supplement(report,raw){
    for(const key of ['period','basis','collectedAt','source','previous','freshness'])if(info[key]!==undefined)result[key]=info[key];
    return result;
   });
-  for(const key of ['showingsAsOf','openHousesAsOf','showingNote'])if(extra[key]!==undefined)out[key]=extra[key];
+  for(const key of ['showingsAsOf','openHousesAsOf','showingNote','showingsThisWeek','showingsPeriodStart','showingsPeriodEnd','showingSource'])if(extra[key]!==undefined)out[key]=extra[key];
  }
  return out;
 }

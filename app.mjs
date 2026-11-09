@@ -9,7 +9,7 @@ function addPerformanceHistory(card,metric){
  if(metric.freshness)card.append(el('p',metric.freshness,'period'));
  if(metric.previous?.comparisonType==='reported-snapshot'){
   const previous=metric.previous;
-  card.append(el('p',`Monday ${previous.collectedAt} → Thursday ${metric.collectedAt}`,'period'));
+  card.append(el('p',`${previous.collectedAt} → ${metric.collectedAt}`,'period'));
   for(const [key,label] of [['views','Views'],['saves','Saves / favorites']]){
    const current=metric[key],baseline=previous[key];
    if(current==null||baseline==null){card.append(el('p',label+': unavailable','weekly-change'));continue;}

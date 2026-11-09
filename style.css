@@ -9,3 +9,6 @@ input{display:block;width:100%;font:inherit;padding:12px;border:1px solid #b8c2b
 
 /* Preserve the complete featured-email screenshot instead of cropping to another listing. */
 .campaign-group img[src$="bridle-brook-bhhs-friday-email.jpg"]{height:auto;max-height:none;object-fit:contain}
+
+/* Keep email previews and result screenshots complete. */
+.campaign-group img[src$="-nov2026.jpg"]{height:auto;max-height:none;object-fit:contain}
